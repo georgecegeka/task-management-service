@@ -18,6 +18,40 @@ public class McpDispatcher {
 
     public Object dispatch(String method, Map<String, Object> params) {
         switch (method) {
+            case "initialize":
+                // MCP initialize response - must include serverInfo and capabilities
+                return Map.of(
+                        "protocolVersion", "2024-11-05",
+                        "serverInfo", Map.of(
+                                "name", "task-management",
+                                "version", "0.1.0"
+                        ),
+                        "capabilities", Map.of(
+                                // Advertise tools capability (list + call)
+                                "tools", Map.of(
+                                        "list", true,
+                                        "call", true
+                                ),
+                                // Resources not used yet; set to false
+                                "resources", Map.of(
+                                        "list", false,
+                                        "read", false
+                                ),
+                                // Prompts not used yet; set to false
+                                "prompts", Map.of(
+                                        "list", false,
+                                        "get", false
+                                )
+                        )
+                );
+            case "notifications/initialized":
+                // Respond to notifications/initialized with serverInfo as required by MCP client
+                return Map.of(
+                        "serverInfo", Map.of(
+                                "name", "task-management",
+                                "version", "0.1.0"
+                        )
+                );
             case "ping":
                 return Map.of("pong", true, "timestamp", System.currentTimeMillis());
             case "listProjects":
@@ -86,4 +120,3 @@ public class McpDispatcher {
         return Long.valueOf(o.toString());
     }
 }
-
