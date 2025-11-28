@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "task-management": {
+      "url": "http://localhost:8080",
+      "type": "sse",
+      "endpoint": "/mcp/sse",
+      "capabilities": {
+        "tools": true,
+        "prompts": true,
+        "resources": true
+      },
+      "description": "Task Management MCP Server - Manage projects and tasks"
+    }
+  }
+}
+

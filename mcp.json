@@ -1,27 +1,249 @@
 {
-  "name": "task-management-mcp",
-  "version": "0.0.1",
-  "protocol": "jsonrpc-2.0",
-  "transport": {
-    "websocket": {
-      "url": "ws://localhost:8081/mcp/ws"
-    },
-    "http": {
-      "url": "http://localhost:8081/mcp/rpc"
+  "mcpServers": {
+    "task-management": {
+      "url": "http://localhost:8080",
+      "transport": "sse",
+      "endpoint": "/mcp/sse",
+      "capabilities": {
+        "tools": true,
+        "prompts": true,
+        "resources": true,
+        "logging": false
+      },
+      "description": "Task Management MCP Server - Manage projects and tasks via MCP protocol",
+      "version": "1.0.0",
+      "protocol": "2024-11-05"
     }
   },
-  "methods": {
-    "ping": {"description": "Health check"},
-    "listProjects": {"description": "List all projects"},
-    "getProject": {"params": {"id": "number"}},
-    "createProject": {"params": {"name": "string", "description": "string?"}},
-    "updateProject": {"params": {"id": "number", "name": "string", "description": "string?"}},
-    "deleteProject": {"params": {"id": "number"}},
-    "listTasks": {"params": {"projectId": "number"}},
-    "getTask": {"params": {"id": "number"}},
-    "createTask": {"params": {"projectId": "number", "title": "string", "description": "string?", "status": "string"}},
-    "updateTask": {"params": {"id": "number", "title": "string", "description": "string?", "status": "string"}},
-    "deleteTask": {"params": {"id": "number"}},
-    "searchTasksByStatus": {"params": {"status": "string"}}
+  "tools": {
+    "listProjects": {
+      "description": "List all projects in the system",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    },
+    "getProject": {
+      "description": "Get details of a specific project by its ID",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "Project ID"
+          }
+        },
+        "required": ["id"]
+      }
+    },
+    "createProject": {
+      "description": "Create a new project with name and description",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Project name"
+          },
+          "description": {
+            "type": "string",
+            "description": "Project description"
+          }
+        },
+        "required": ["name"]
+      }
+    },
+    "updateProject": {
+      "description": "Update an existing project's name and/or description",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "Project ID"
+          },
+          "name": {
+            "type": "string",
+            "description": "New project name"
+          },
+          "description": {
+            "type": "string",
+            "description": "New project description"
+          }
+        },
+        "required": ["id", "name"]
+      }
+    },
+    "deleteProject": {
+      "description": "Delete a project by its ID",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "Project ID to delete"
+          }
+        },
+        "required": ["id"]
+      }
+    },
+    "listTasks": {
+      "description": "List all tasks for a specific project",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "number",
+            "description": "Project ID"
+          }
+        },
+        "required": ["projectId"]
+      }
+    },
+    "getTask": {
+      "description": "Get details of a specific task by its ID",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "Task ID"
+          }
+        },
+        "required": ["id"]
+      }
+    },
+    "createTask": {
+      "description": "Create a new task in a project with title, description, and status",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "number",
+            "description": "Project ID"
+          },
+          "title": {
+            "type": "string",
+            "description": "Task title"
+          },
+          "description": {
+            "type": "string",
+            "description": "Task description"
+          },
+          "status": {
+            "type": "string",
+            "description": "Task status (TODO, IN_PROGRESS, DONE)"
+          }
+        },
+        "required": ["projectId", "title"]
+      }
+    },
+    "updateTask": {
+      "description": "Update an existing task's title, description, and/or status",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "Task ID"
+          },
+          "title": {
+            "type": "string",
+            "description": "New task title"
+          },
+          "description": {
+            "type": "string",
+            "description": "New task description"
+          },
+          "status": {
+            "type": "string",
+            "description": "New task status"
+          }
+        },
+        "required": ["id", "title"]
+      }
+    },
+    "deleteTask": {
+      "description": "Delete a task by its ID",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "Task ID to delete"
+          }
+        },
+        "required": ["id"]
+      }
+    },
+    "searchTasksByStatus": {
+      "description": "Search for tasks across all projects by their status (TODO, IN_PROGRESS, or DONE)",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Status to search for (TODO, IN_PROGRESS, DONE)"
+          }
+        },
+        "required": ["status"]
+      }
+    }
+  },
+  "prompts": {
+    "project_summary": {
+      "description": "Generate a comprehensive summary of a project and its tasks",
+      "arguments": {
+        "projectId": {
+          "type": "number",
+          "description": "The ID of the project to summarize",
+          "required": true
+        }
+      }
+    },
+    "task_report": {
+      "description": "Generate a detailed report of tasks by status",
+      "arguments": {
+        "status": {
+          "type": "string",
+          "description": "Task status: TODO, IN_PROGRESS, or DONE",
+          "required": false,
+          "default": "TODO"
+        }
+      }
+    },
+    "project_planning": {
+      "description": "Help plan a new project with suggested tasks",
+      "arguments": {
+        "projectName": {
+          "type": "string",
+          "description": "Name of the project to plan",
+          "required": true
+        }
+      }
+    }
+  },
+  "resources": {
+    "task://projects": {
+      "name": "All Projects",
+      "description": "List of all projects in the system",
+      "mimeType": "application/json"
+    },
+    "task://tasks/todo": {
+      "name": "TODO Tasks",
+      "description": "All tasks with TODO status",
+      "mimeType": "application/json"
+    },
+    "task://tasks/in_progress": {
+      "name": "In Progress Tasks",
+      "description": "All tasks currently in progress",
+      "mimeType": "application/json"
+    },
+    "task://tasks/done": {
+      "name": "Completed Tasks",
+      "description": "All completed tasks",
+      "mimeType": "application/json"
+    }
   }
 }

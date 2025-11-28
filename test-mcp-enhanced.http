@@ -1,0 +1,305 @@
+### MCP Server Test Endpoints
+### Test all MCP capabilities
+
+### Variables
+@baseUrl = http://localhost:8080
+@mcpPath = /mcp
+
+### 1. Server Info
+GET {{baseUrl}}{{mcpPath}}
+Content-Type: application/json
+
+###
+
+### 2. Ping Health Check
+GET {{baseUrl}}{{mcpPath}}/ping
+Content-Type: application/json
+
+###
+
+### 3. Initialize MCP Connection
+POST {{baseUrl}}{{mcpPath}}/initialize
+Content-Type: application/json
+
+{
+  "protocolVersion": "2024-11-05",
+  "clientInfo": {
+    "name": "test-client",
+    "version": "1.0.0"
+  },
+  "capabilities": {
+    "roots": {
+      "listChanged": true
+    }
+  }
+}
+
+###
+
+### 4. Notifications Initialized
+POST {{baseUrl}}{{mcpPath}}/notifications/initialized
+Content-Type: application/json
+
+{}
+
+###
+
+### 5. List All Tools
+POST {{baseUrl}}{{mcpPath}}/tools/list
+Content-Type: application/json
+
+{}
+
+###
+
+### 6. List All Prompts
+POST {{baseUrl}}{{mcpPath}}/prompts/list
+Content-Type: application/json
+
+{}
+
+###
+
+### 7. Get Project Summary Prompt
+POST {{baseUrl}}{{mcpPath}}/prompts/get
+Content-Type: application/json
+
+{
+  "name": "project_summary",
+  "arguments": {
+    "projectId": 1
+  }
+}
+
+###
+
+### 8. Get Task Report Prompt
+POST {{baseUrl}}{{mcpPath}}/prompts/get
+Content-Type: application/json
+
+{
+  "name": "task_report",
+  "arguments": {
+    "status": "TODO"
+  }
+}
+
+###
+
+### 9. Get Project Planning Prompt
+POST {{baseUrl}}{{mcpPath}}/prompts/get
+Content-Type: application/json
+
+{
+  "name": "project_planning",
+  "arguments": {
+    "projectName": "New E-commerce Platform"
+  }
+}
+
+###
+
+### 10. List All Resources
+POST {{baseUrl}}{{mcpPath}}/resources/list
+Content-Type: application/json
+
+{}
+
+###
+
+### 11. Read Projects Resource
+POST {{baseUrl}}{{mcpPath}}/resources/read
+Content-Type: application/json
+
+{
+  "uri": "task://projects"
+}
+
+###
+
+### 12. Read TODO Tasks Resource
+POST {{baseUrl}}{{mcpPath}}/resources/read
+Content-Type: application/json
+
+{
+  "uri": "task://tasks/todo"
+}
+
+###
+
+### 13. Read In Progress Tasks Resource
+POST {{baseUrl}}{{mcpPath}}/resources/read
+Content-Type: application/json
+
+{
+  "uri": "task://tasks/in_progress"
+}
+
+###
+
+### 14. Read Done Tasks Resource
+POST {{baseUrl}}{{mcpPath}}/resources/read
+Content-Type: application/json
+
+{
+  "uri": "task://tasks/done"
+}
+
+###
+
+### 15. Call Tool: List Projects
+POST {{baseUrl}}{{mcpPath}}/tools/call
+Content-Type: application/json
+
+{
+  "name": "listProjects",
+  "arguments": {}
+}
+
+###
+
+### 16. Call Tool: Create Project
+POST {{baseUrl}}{{mcpPath}}/tools/call
+Content-Type: application/json
+
+{
+  "name": "createProject",
+  "arguments": {
+    "name": "MCP Test Project",
+    "description": "A project created via MCP tools"
+  }
+}
+
+###
+
+### 17. Call Tool: Get Project (use ID from previous response)
+POST {{baseUrl}}{{mcpPath}}/tools/call
+Content-Type: application/json
+
+{
+  "name": "getProject",
+  "arguments": {
+    "id": 1
+  }
+}
+
+###
+
+### 18. Call Tool: Create Task
+POST {{baseUrl}}{{mcpPath}}/tools/call
+Content-Type: application/json
+
+{
+  "name": "createTask",
+  "arguments": {
+    "projectId": 1,
+    "title": "Implement MCP integration",
+    "description": "Add full MCP server support",
+    "status": "IN_PROGRESS"
+  }
+}
+
+###
+
+### 19. Call Tool: List Tasks for Project
+POST {{baseUrl}}{{mcpPath}}/tools/call
+Content-Type: application/json
+
+{
+  "name": "listTasks",
+  "arguments": {
+    "projectId": 1
+  }
+}
+
+###
+
+### 20. Call Tool: Search Tasks by Status
+POST {{baseUrl}}{{mcpPath}}/tools/call
+Content-Type: application/json
+
+{
+  "name": "searchTasksByStatus",
+  "arguments": {
+    "status": "TODO"
+  }
+}
+
+###
+
+### 21. Call Tool: Update Task
+POST {{baseUrl}}{{mcpPath}}/tools/call
+Content-Type: application/json
+
+{
+  "name": "updateTask",
+  "arguments": {
+    "id": 1,
+    "title": "Implement MCP integration - Updated",
+    "description": "Add full MCP server support with SSE",
+    "status": "DONE"
+  }
+}
+
+###
+
+### 22. Call Tool: Update Project
+POST {{baseUrl}}{{mcpPath}}/tools/call
+Content-Type: application/json
+
+{
+  "name": "updateProject",
+  "arguments": {
+    "id": 1,
+    "name": "MCP Test Project - Updated",
+    "description": "Updated via MCP tools"
+  }
+}
+
+###
+
+### 23. Call Tool: Get Task
+POST {{baseUrl}}{{mcpPath}}/tools/call
+Content-Type: application/json
+
+{
+  "name": "getTask",
+  "arguments": {
+    "id": 1
+  }
+}
+
+###
+
+### 24. SSE Message Endpoint (POST)
+POST {{baseUrl}}{{mcpPath}}/sse/message
+Content-Type: application/json
+
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "initialize",
+  "params": {
+    "protocolVersion": "2024-11-05",
+    "clientInfo": {
+      "name": "sse-test-client",
+      "version": "1.0.0"
+    }
+  }
+}
+
+###
+
+### 25. SSE Tools List via Message Endpoint
+POST {{baseUrl}}{{mcpPath}}/sse/message
+Content-Type: application/json
+
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "method": "tools/list",
+  "params": {}
+}
+
+###
+

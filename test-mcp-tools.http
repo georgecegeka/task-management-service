@@ -1,0 +1,365 @@
+### Test MCP Tools - Complete Workflow
+### Make sure the application is running on http://localhost:8080
+
+### 1. Health Check - Ping
+GET http://localhost:8080/mcp/ping
+Accept: application/json
+
+### 2. Server Info
+GET http://localhost:8080/mcp
+Accept: application/json
+
+### 3. Initialize MCP Connection
+POST http://localhost:8080/mcp/initialize
+Content-Type: application/json
+Accept: application/json
+
+{
+  "protocolVersion": "2024-11-05",
+  "clientInfo": {
+    "name": "test-client",
+    "version": "1.0.0"
+  },
+  "capabilities": {}
+}
+
+### 4. Notifications Initialized
+POST http://localhost:8080/mcp/notifications/initialized
+Content-Type: application/json
+Accept: application/json
+
+{}
+
+### 5. List Available Tools
+POST http://localhost:8080/mcp/tools/list
+Content-Type: application/json
+Accept: application/json
+
+{}
+
+### PROJECT OPERATIONS
+
+### 6. Create Project 1
+POST http://localhost:8080/mcp/tools/call
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "createProject",
+  "arguments": {
+    "name": "AI Hackathon Project",
+    "description": "Main project for AI Hackathon 2025"
+  }
+}
+
+### 7. Create Project 2
+POST http://localhost:8080/mcp/tools/call
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "createProject",
+  "arguments": {
+    "name": "Task Management System",
+    "description": "MCP-enabled task management application"
+  }
+}
+
+### 8. List All Projects
+POST http://localhost:8080/mcp/tools/call
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "listProjects",
+  "arguments": {}
+}
+
+### 9. Get Project by ID (use ID from create response)
+POST http://localhost:8080/mcp/tools/call
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "getProject",
+  "arguments": {
+    "id": 1
+  }
+}
+
+### 10. Update Project
+POST http://localhost:8080/mcp/tools/call
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "updateProject",
+  "arguments": {
+    "id": 1,
+    "name": "AI Hackathon Project - Updated",
+    "description": "Main project for AI Hackathon 2025 - MCP Integration Complete"
+  }
+}
+
+### TASK OPERATIONS
+
+### 11. Create Task 1 - TODO
+POST http://localhost:8080/mcp/tools/call
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "createTask",
+  "arguments": {
+    "projectId": 1,
+    "title": "Setup MCP Server",
+    "description": "Configure and test MCP server endpoints",
+    "status": "DONE"
+  }
+}
+
+### 12. Create Task 2 - IN_PROGRESS
+POST http://localhost:8080/mcp/tools/call
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "createTask",
+  "arguments": {
+    "projectId": 1,
+    "title": "Implement Spring AI Integration",
+    "description": "Add Spring AI MCP capabilities",
+    "status": "IN_PROGRESS"
+  }
+}
+
+### 13. Create Task 3 - TODO
+POST http://localhost:8080/mcp/tools/call
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "createTask",
+  "arguments": {
+    "projectId": 1,
+    "title": "Create Angular UI",
+    "description": "Build front-end interface for task management",
+    "status": "TODO"
+  }
+}
+
+### 14. Create Task 4 - TODO (for Project 2)
+POST http://localhost:8080/mcp/tools/call
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "createTask",
+  "arguments": {
+    "projectId": 2,
+    "title": "Database Setup",
+    "description": "Configure H2 database and repositories",
+    "status": "DONE"
+  }
+}
+
+### 15. List Tasks for Project 1
+POST http://localhost:8080/mcp/tools/call
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "listTasks",
+  "arguments": {
+    "projectId": 1
+  }
+}
+
+### 16. List Tasks for Project 2
+POST http://localhost:8080/mcp/tools/call
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "listTasks",
+  "arguments": {
+    "projectId": 2
+  }
+}
+
+### 17. Get Task by ID
+POST http://localhost:8080/mcp/tools/call
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "getTask",
+  "arguments": {
+    "id": 1
+  }
+}
+
+### 18. Update Task Status
+POST http://localhost:8080/mcp/tools/call
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "updateTask",
+  "arguments": {
+    "id": 2,
+    "title": "Implement Spring AI Integration",
+    "description": "Add Spring AI MCP capabilities - Testing complete",
+    "status": "DONE"
+  }
+}
+
+### 19. Search Tasks by Status - TODO
+POST http://localhost:8080/mcp/tools/call
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "searchTasksByStatus",
+  "arguments": {
+    "status": "TODO"
+  }
+}
+
+### 20. Search Tasks by Status - IN_PROGRESS
+POST http://localhost:8080/mcp/tools/call
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "searchTasksByStatus",
+  "arguments": {
+    "status": "IN_PROGRESS"
+  }
+}
+
+### 21. Search Tasks by Status - DONE
+POST http://localhost:8080/mcp/tools/call
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "searchTasksByStatus",
+  "arguments": {
+    "status": "DONE"
+  }
+}
+
+### ERROR SCENARIOS
+
+### 22. Get Non-existent Project
+POST http://localhost:8080/mcp/tools/call
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "getProject",
+  "arguments": {
+    "id": 999
+  }
+}
+
+### 23. Get Non-existent Task
+POST http://localhost:8080/mcp/tools/call
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "getTask",
+  "arguments": {
+    "id": 999
+  }
+}
+
+### 24. Create Task with Invalid Project ID
+POST http://localhost:8080/mcp/tools/call
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "createTask",
+  "arguments": {
+    "projectId": 999,
+    "title": "Invalid Task",
+    "description": "This should fail",
+    "status": "TODO"
+  }
+}
+
+### 25. Call Unknown Tool
+POST http://localhost:8080/mcp/tools/call
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "unknownTool",
+  "arguments": {}
+}
+
+### CLEANUP
+
+### 26. Delete Task
+POST http://localhost:8080/mcp/tools/call
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "deleteTask",
+  "arguments": {
+    "id": 3
+  }
+}
+
+### 27. Delete Project (with no tasks)
+POST http://localhost:8080/mcp/tools/call
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "deleteProject",
+  "arguments": {
+    "id": 2
+  }
+}
+
+### VERIFICATION
+
+### 28. Verify Project Still Exists
+POST http://localhost:8080/mcp/tools/call
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "getProject",
+  "arguments": {
+    "id": 1
+  }
+}
+
+### 29. Final List of All Projects
+POST http://localhost:8080/mcp/tools/call
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "listProjects",
+  "arguments": {}
+}
+
+### 30. Final List of All Tasks in Project 1
+POST http://localhost:8080/mcp/tools/call
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "listTasks",
+  "arguments": {
+    "projectId": 1
+  }
+}
+

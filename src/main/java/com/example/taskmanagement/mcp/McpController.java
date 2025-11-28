@@ -76,6 +76,208 @@ public class McpController {
     }
 
     /**
+     * List available prompts
+     */
+    @PostMapping(value = "/prompts/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Map<String, Object>> listPrompts() {
+        log.info("MCP prompts/list request");
+
+        List<Map<String, Object>> prompts = Arrays.asList(
+            Map.of(
+                "name", "project_summary",
+                "description", "Generate a comprehensive summary of a project and its tasks",
+                "arguments", List.of(
+                    Map.of(
+                        "name", "projectId",
+                        "description", "The ID of the project to summarize",
+                        "required", true
+                    )
+                )
+            ),
+            Map.of(
+                "name", "task_report",
+                "description", "Generate a detailed report of tasks by status",
+                "arguments", List.of(
+                    Map.of(
+                        "name", "status",
+                        "description", "Task status: TODO, IN_PROGRESS, or DONE",
+                        "required", false
+                    )
+                )
+            ),
+            Map.of(
+                "name", "project_planning",
+                "description", "Help plan a new project with suggested tasks",
+                "arguments", List.of(
+                    Map.of(
+                        "name", "projectName",
+                        "description", "Name of the project to plan",
+                        "required", true
+                    )
+                )
+            )
+        );
+
+        return ResponseEntity.ok(Map.of("prompts", prompts));
+    }
+
+    /**
+     * Get a specific prompt
+     */
+    @PostMapping(value = "/prompts/get", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Map<String, Object>> getPrompt(@RequestBody Map<String, Object> request) {
+        String name = (String) request.get("name");
+        @SuppressWarnings("unchecked")
+        Map<String, Object> arguments = (Map<String, Object>) request.getOrDefault("arguments", Map.of());
+
+        log.info("MCP prompts/get request: name={}, arguments={}", name, arguments);
+
+        String description;
+        List<Map<String, Object>> messages = new ArrayList<>();
+
+        switch (name) {
+            case "project_summary" -> {
+                description = "Generates a comprehensive summary of a project";
+                Long projectId = getLong(arguments, "projectId");
+                messages.add(Map.of(
+                    "role", "user",
+                    "content", Map.of(
+                        "type", "text",
+                        "text", String.format(
+                            "Please provide a comprehensive summary of project ID %d including " +
+                            "all tasks, their current status, and any notable insights.",
+                            projectId
+                        )
+                    )
+                ));
+            }
+            case "task_report" -> {
+                description = "Generates a report of tasks by status";
+                String status = (String) arguments.getOrDefault("status", "TODO");
+                messages.add(Map.of(
+                    "role", "user",
+                    "content", Map.of(
+                        "type", "text",
+                        "text", String.format(
+                            "Generate a detailed report of all tasks with status '%s'. " +
+                            "Include task titles, descriptions, and the projects they belong to.",
+                            status
+                        )
+                    )
+                ));
+            }
+            case "project_planning" -> {
+                description = "Helps plan a new project";
+                String projectName = (String) arguments.get("projectName");
+                messages.add(Map.of(
+                    "role", "user",
+                    "content", Map.of(
+                        "type", "text",
+                        "text", String.format(
+                            "I'm planning a new project called '%s'. Can you help me break it down " +
+                            "into manageable tasks? Please suggest appropriate task titles, descriptions, " +
+                            "and recommended statuses.",
+                            projectName
+                        )
+                    )
+                ));
+            }
+            default -> {
+                return ResponseEntity.badRequest().body(Map.of(
+                    "error", "Unknown prompt: " + name
+                ));
+            }
+        }
+
+        return ResponseEntity.ok(Map.of(
+            "description", description,
+            "messages", messages
+        ));
+    }
+
+    /**
+     * List available resources
+     */
+    @PostMapping(value = "/resources/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Map<String, Object>> listResources() {
+        log.info("MCP resources/list request");
+
+        List<Map<String, Object>> resources = Arrays.asList(
+            Map.of(
+                "uri", "task://projects",
+                "name", "All Projects",
+                "description", "List of all projects in the system",
+                "mimeType", "application/json"
+            ),
+            Map.of(
+                "uri", "task://tasks/todo",
+                "name", "TODO Tasks",
+                "description", "All tasks with TODO status",
+                "mimeType", "application/json"
+            ),
+            Map.of(
+                "uri", "task://tasks/in_progress",
+                "name", "In Progress Tasks",
+                "description", "All tasks currently in progress",
+                "mimeType", "application/json"
+            ),
+            Map.of(
+                "uri", "task://tasks/done",
+                "name", "Completed Tasks",
+                "description", "All completed tasks",
+                "mimeType", "application/json"
+            )
+        );
+
+        return ResponseEntity.ok(Map.of("resources", resources));
+    }
+
+    /**
+     * Read a specific resource
+     */
+    @PostMapping(value = "/resources/read", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Map<String, Object>> readResource(@RequestBody Map<String, Object> request) {
+        String uri = (String) request.get("uri");
+        log.info("MCP resources/read request: uri={}", uri);
+
+        try {
+            String content;
+            if (uri.equals("task://projects")) {
+                McpToolsConfiguration.ListProjectsRequest req = new McpToolsConfiguration.ListProjectsRequest();
+                Object result = toolRegistry.getTool("listProjects").function().apply(req);
+                content = objectMapper.writeValueAsString(result);
+            } else if (uri.startsWith("task://tasks/")) {
+                String status = uri.substring("task://tasks/".length()).toUpperCase();
+                McpToolsConfiguration.SearchTasksByStatusRequest req =
+                    new McpToolsConfiguration.SearchTasksByStatusRequest(status);
+                Object result = toolRegistry.getTool("searchTasksByStatus").function().apply(req);
+                content = objectMapper.writeValueAsString(result);
+            } else {
+                return ResponseEntity.badRequest().body(Map.of(
+                    "error", "Unknown resource URI: " + uri
+                ));
+            }
+
+            return ResponseEntity.ok(Map.of(
+                "contents", List.of(Map.of(
+                    "uri", uri,
+                    "mimeType", "application/json",
+                    "text", content
+                ))
+            ));
+        } catch (Exception e) {
+            log.error("Error reading resource {}: {}", uri, e.getMessage(), e);
+            return ResponseEntity.ok(Map.of(
+                "contents", List.of(Map.of(
+                    "uri", uri,
+                    "mimeType", "text/plain",
+                    "text", "Error: " + e.getMessage()
+                ))
+            ));
+        }
+    }
+
+    /**
      * Call a specific tool
      */
     @PostMapping(value = "/tools/call", produces = MediaType.APPLICATION_JSON_VALUE)
