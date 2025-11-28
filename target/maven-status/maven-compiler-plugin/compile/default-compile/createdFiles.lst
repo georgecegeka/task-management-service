@@ -1,0 +1,12 @@
+com\example\taskmanagement\TaskManagementApplication.class
+com\example\taskmanagement\repository\ProjectRepository.class
+com\example\taskmanagement\model\Project$ProjectBuilder.class
+com\example\taskmanagement\controller\ProjectController.class
+com\example\taskmanagement\controller\TaskController.class
+com\example\taskmanagement\model\Project.class
+com\example\taskmanagement\service\ProjectService.class
+com\example\taskmanagement\service\TaskService.class
+com\example\taskmanagement\model\Task$Status.class
+com\example\taskmanagement\model\Task$TaskBuilder.class
+com\example\taskmanagement\model\Task.class
+com\example\taskmanagement\repository\TaskRepository.class
