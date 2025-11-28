@@ -2,6 +2,9 @@
 
 This folder contains HTTP request examples for testing the Task Management API endpoints.
 
+## ✅ Fixed: Circular Reference Issue
+The application has been updated to handle JSON serialization properly. The circular reference between Project and Task entities has been resolved using `@JsonManagedReference` and `@JsonBackReference` annotations. All examples now work correctly!
+
 ## Files Overview
 
 ### 1. `project-requests.http`
