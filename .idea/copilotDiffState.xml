@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CopilotDiffPersistence">
+    <option name="pendingDiffs">
+      <map>
+        <entry key="$PROJECT_DIR$/src/main/java/com/example/taskmanagement/config/CorsConfig.java">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/src/main/java/com/example/taskmanagement/config/CorsConfig.java" />
+              <option name="updatedContent" value="package com.example.taskmanagement.config;&#10;&#10;import org.springframework.context.annotation.Bean;&#10;import org.springframework.context.annotation.Configuration;&#10;import org.springframework.web.cors.CorsConfiguration;&#10;import org.springframework.web.cors.UrlBasedCorsConfigurationSource;&#10;import org.springframework.web.filter.CorsFilter;&#10;&#10;import java.util.Arrays;&#10;&#10;@Configuration&#10;public class CorsConfig {&#10;&#10;    @Bean&#10;    public CorsFilter corsFilter() {&#10;        CorsConfiguration config = new CorsConfiguration();&#10;        &#10;        // Allow requests from localhost:4200&#10;        config.addAllowedOrigin(&quot;http://localhost:4200&quot;);&#10;        &#10;        // Allow all HTTP methods (GET, POST, PUT, DELETE, etc.)&#10;        config.addAllowedMethod(&quot;*&quot;);&#10;        &#10;        // Allow all headers&#10;        config.addAllowedHeader(&quot;*&quot;);&#10;        &#10;        // Don't allow credentials&#10;        config.setAllowCredentials(false);&#10;        &#10;        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();&#10;        source.registerCorsConfiguration(&quot;/**&quot;, config);&#10;        &#10;        return new CorsFilter(source);&#10;    }&#10;}&#10;" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
