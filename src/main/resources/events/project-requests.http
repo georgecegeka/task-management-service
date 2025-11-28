@@ -1,0 +1,64 @@
+### Project API Examples
+### Base URL: http://localhost:8080
+
+### 1. Get all projects
+GET http://localhost:8080/api/projects
+Accept: application/json
+
+###
+
+### 2. Get project by ID
+GET http://localhost:8080/api/projects/1
+Accept: application/json
+
+###
+
+### 3. Create a new project
+POST http://localhost:8080/api/projects
+Content-Type: application/json
+
+{
+  "name": "E-Commerce Platform",
+  "description": "Development of a new e-commerce platform with modern features"
+}
+
+###
+
+### 4. Create another project
+POST http://localhost:8080/api/projects
+Content-Type: application/json
+
+{
+  "name": "Mobile App Development",
+  "description": "Native mobile application for iOS and Android"
+}
+
+###
+
+### 5. Create a third project
+POST http://localhost:8080/api/projects
+Content-Type: application/json
+
+{
+  "name": "AI Hackathon Project",
+  "description": "Task management system for hackathon teams"
+}
+
+###
+
+### 6. Update project
+PUT http://localhost:8080/api/projects/1
+Content-Type: application/json
+
+{
+  "name": "E-Commerce Platform - Updated",
+  "description": "Enhanced e-commerce platform with AI-powered recommendations"
+}
+
+###
+
+### 7. Delete project
+DELETE http://localhost:8080/api/projects/1
+
+###
+

@@ -1,0 +1,200 @@
+### Error Scenarios and Edge Cases
+### These examples demonstrate error handling and validation
+### Base URL: http://localhost:8080
+
+### 1. Get non-existent project (Should return 404)
+GET http://localhost:8080/api/projects/999
+Accept: application/json
+
+###
+
+### 2. Get non-existent task (Should return 404)
+GET http://localhost:8080/api/tasks/999
+Accept: application/json
+
+###
+
+### 3. Create project with missing required field (Should return 400/500)
+POST http://localhost:8080/api/projects
+Content-Type: application/json
+
+{
+  "description": "Project without name"
+}
+
+###
+
+### 4. Create task with missing required field (Should return 400/500)
+POST http://localhost:8080/api/projects/1/tasks
+Content-Type: application/json
+
+{
+  "description": "Task without title",
+  "status": "TODO"
+}
+
+###
+
+### 5. Create task with invalid status (Should return 400)
+POST http://localhost:8080/api/projects/1/tasks
+Content-Type: application/json
+
+{
+  "title": "Invalid status task",
+  "description": "This has an invalid status",
+  "status": "INVALID_STATUS"
+}
+
+###
+
+### 6. Create task for non-existent project (Should return 404/500)
+POST http://localhost:8080/api/projects/999/tasks
+Content-Type: application/json
+
+{
+  "title": "Task for non-existent project",
+  "description": "This project doesn't exist",
+  "status": "TODO"
+}
+
+###
+
+### 7. Update non-existent project (Should return 404/500)
+PUT http://localhost:8080/api/projects/999
+Content-Type: application/json
+
+{
+  "name": "Non-existent Project",
+  "description": "This project doesn't exist"
+}
+
+###
+
+### 8. Update non-existent task (Should return 404/500)
+PUT http://localhost:8080/api/tasks/999
+Content-Type: application/json
+
+{
+  "title": "Non-existent Task",
+  "description": "This task doesn't exist",
+  "status": "TODO"
+}
+
+###
+
+### 9. Delete non-existent project (Should return 404/500)
+DELETE http://localhost:8080/api/projects/999
+
+###
+
+### 10. Delete non-existent task (Should return 404/500)
+DELETE http://localhost:8080/api/tasks/999
+
+###
+
+### 11. Create project with empty name (Should return 400/500)
+POST http://localhost:8080/api/projects
+Content-Type: application/json
+
+{
+  "name": "",
+  "description": "Project with empty name"
+}
+
+###
+
+### 12. Create task with empty title (Should return 400/500)
+POST http://localhost:8080/api/projects/1/tasks
+Content-Type: application/json
+
+{
+  "title": "",
+  "description": "Task with empty title",
+  "status": "TODO"
+}
+
+###
+
+### 13. Create project with null name (Should return 400/500)
+POST http://localhost:8080/api/projects
+Content-Type: application/json
+
+{
+  "name": null,
+  "description": "Project with null name"
+}
+
+###
+
+### 14. Invalid JSON format (Should return 400)
+POST http://localhost:8080/api/projects
+Content-Type: application/json
+
+{
+  "name": "Invalid JSON Project"
+  "description": "Missing comma in JSON"
+}
+
+###
+
+### 15. Wrong Content-Type header (Should return 415)
+POST http://localhost:8080/api/projects
+Content-Type: text/plain
+
+{
+  "name": "Test Project",
+  "description": "Sent with wrong content type"
+}
+
+###
+
+### 16. Empty request body (Should return 400)
+POST http://localhost:8080/api/projects
+Content-Type: application/json
+
+###
+
+### 17. Create task with all null fields (Should return 400/500)
+POST http://localhost:8080/api/projects/1/tasks
+Content-Type: application/json
+
+{
+  "title": null,
+  "description": null,
+  "status": null
+}
+
+###
+
+### Valid Requests for Testing After Errors
+### ========================================
+
+### Create a valid project to test with
+POST http://localhost:8080/api/projects
+Content-Type: application/json
+
+{
+  "name": "Test Project for Error Scenarios",
+  "description": "A valid project for testing edge cases"
+}
+
+###
+
+### Create a valid task
+POST http://localhost:8080/api/projects/1/tasks
+Content-Type: application/json
+
+{
+  "title": "Valid test task",
+  "description": "A properly formatted task",
+  "status": "TODO"
+}
+
+###
+
+### Verify everything works
+GET http://localhost:8080/api/projects
+Accept: application/json
+
+###
+

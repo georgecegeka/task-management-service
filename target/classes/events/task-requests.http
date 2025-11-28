@@ -1,0 +1,115 @@
+### Task API Examples
+### Base URL: http://localhost:8080
+
+### 1. Get all tasks for a project
+GET http://localhost:8080/api/projects/1/tasks
+Accept: application/json
+
+###
+
+### 2. Get task by ID
+GET http://localhost:8080/api/tasks/1
+Accept: application/json
+
+###
+
+### 3. Create a new task (TODO status)
+POST http://localhost:8080/api/projects/1/tasks
+Content-Type: application/json
+
+{
+  "title": "Design database schema",
+  "description": "Create ERD and database schema for the application",
+  "status": "TODO"
+}
+
+###
+
+### 4. Create a task in IN_PROGRESS status
+POST http://localhost:8080/api/projects/1/tasks
+Content-Type: application/json
+
+{
+  "title": "Implement REST API endpoints",
+  "description": "Develop RESTful API for project and task management",
+  "status": "IN_PROGRESS"
+}
+
+###
+
+### 5. Create a task in DONE status
+POST http://localhost:8080/api/projects/1/tasks
+Content-Type: application/json
+
+{
+  "title": "Setup Spring Boot project",
+  "description": "Initialize Spring Boot application with dependencies",
+  "status": "DONE"
+}
+
+###
+
+### 6. Create multiple tasks for project 2
+POST http://localhost:8080/api/projects/2/tasks
+Content-Type: application/json
+
+{
+  "title": "Design UI mockups",
+  "description": "Create wireframes and mockups for mobile app",
+  "status": "TODO"
+}
+
+###
+
+POST http://localhost:8080/api/projects/2/tasks
+Content-Type: application/json
+
+{
+  "title": "Setup CI/CD pipeline",
+  "description": "Configure automated build and deployment",
+  "status": "IN_PROGRESS"
+}
+
+###
+
+### 7. Update task status
+PUT http://localhost:8080/api/tasks/1
+Content-Type: application/json
+
+{
+  "title": "Design database schema",
+  "description": "Create ERD and database schema for the application",
+  "status": "IN_PROGRESS"
+}
+
+###
+
+### 8. Update task to DONE
+PUT http://localhost:8080/api/tasks/2
+Content-Type: application/json
+
+{
+  "title": "Implement REST API endpoints",
+  "description": "Developed and tested all RESTful API endpoints",
+  "status": "DONE"
+}
+
+###
+
+### 9. Update task title and description
+PUT http://localhost:8080/api/tasks/3
+Content-Type: application/json
+
+{
+  "title": "Setup Spring Boot project - Updated",
+  "description": "Initialized Spring Boot application with Maven, JPA, and H2 database",
+  "status": "DONE"
+}
+
+###
+
+### 10. Delete a task
+DELETE http://localhost:8080/api/tasks/1
+
+###
+

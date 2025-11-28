@@ -1,0 +1,206 @@
+### Complete Workflow Example
+### This file contains a complete workflow to test the entire application
+### Base URL: http://localhost:8080
+
+### STEP 1: Create Projects
+### ========================
+
+### Create Project 1
+POST http://localhost:8080/api/projects
+Content-Type: application/json
+
+{
+  "name": "E-Commerce Platform",
+  "description": "Development of a new e-commerce platform with modern features"
+}
+
+###
+
+### Create Project 2
+POST http://localhost:8080/api/projects
+Content-Type: application/json
+
+{
+  "name": "Mobile App Development",
+  "description": "Native mobile application for iOS and Android"
+}
+
+###
+
+### STEP 2: Verify Projects Created
+### ================================
+
+### Get all projects
+GET http://localhost:8080/api/projects
+Accept: application/json
+
+###
+
+### STEP 3: Create Tasks for Project 1
+### ===================================
+
+### Task 1 - TODO
+POST http://localhost:8080/api/projects/1/tasks
+Content-Type: application/json
+
+{
+  "title": "Setup development environment",
+  "description": "Install and configure all necessary development tools",
+  "status": "TODO"
+}
+
+###
+
+### Task 2 - IN_PROGRESS
+POST http://localhost:8080/api/projects/1/tasks
+Content-Type: application/json
+
+{
+  "title": "Design system architecture",
+  "description": "Create architectural diagrams and technology stack documentation",
+  "status": "IN_PROGRESS"
+}
+
+###
+
+### Task 3 - DONE
+POST http://localhost:8080/api/projects/1/tasks
+Content-Type: application/json
+
+{
+  "title": "Project kickoff meeting",
+  "description": "Initial team meeting to discuss project goals and timeline",
+  "status": "DONE"
+}
+
+###
+
+### STEP 4: Create Tasks for Project 2
+### ===================================
+
+### Task 4
+POST http://localhost:8080/api/projects/2/tasks
+Content-Type: application/json
+
+{
+  "title": "Research UI frameworks",
+  "description": "Evaluate React Native vs Flutter for mobile development",
+  "status": "TODO"
+}
+
+###
+
+### Task 5
+POST http://localhost:8080/api/projects/2/tasks
+Content-Type: application/json
+
+{
+  "title": "Setup mobile development environment",
+  "description": "Install Android Studio and Xcode",
+  "status": "IN_PROGRESS"
+}
+
+###
+
+### STEP 5: Get Tasks for Specific Project
+### =======================================
+
+### Get all tasks for Project 1
+GET http://localhost:8080/api/projects/1/tasks
+Accept: application/json
+
+###
+
+### Get all tasks for Project 2
+GET http://localhost:8080/api/projects/2/tasks
+Accept: application/json
+
+###
+
+### STEP 6: Update Task Status
+### ===========================
+
+### Update Task 1 from TODO to IN_PROGRESS
+PUT http://localhost:8080/api/tasks/1
+Content-Type: application/json
+
+{
+  "title": "Setup development environment",
+  "description": "Install and configure all necessary development tools",
+  "status": "IN_PROGRESS"
+}
+
+###
+
+### Update Task 2 from IN_PROGRESS to DONE
+PUT http://localhost:8080/api/tasks/2
+Content-Type: application/json
+
+{
+  "title": "Design system architecture",
+  "description": "Created architectural diagrams and technology stack documentation",
+  "status": "DONE"
+}
+
+###
+
+### STEP 7: Get Individual Task Details
+### ====================================
+
+### Get Task 1 details
+GET http://localhost:8080/api/tasks/1
+Accept: application/json
+
+###
+
+### Get Task 2 details
+GET http://localhost:8080/api/tasks/2
+Accept: application/json
+
+###
+
+### STEP 8: Update Project
+### ======================
+
+### Update Project 1 details
+PUT http://localhost:8080/api/projects/1
+Content-Type: application/json
+
+{
+  "name": "E-Commerce Platform v2.0",
+  "description": "Enhanced e-commerce platform with AI-powered recommendations and real-time analytics"
+}
+
+###
+
+### STEP 9: Get Project Details
+### ============================
+
+### Get updated Project 1
+GET http://localhost:8080/api/projects/1
+Accept: application/json
+
+###
+
+### STEP 10: Cleanup (Optional)
+### ============================
+
+### Delete a task
+# DELETE http://localhost:8080/api/tasks/5
+
+###
+
+### Delete a project (this will delete all associated tasks)
+# DELETE http://localhost:8080/api/projects/2
+
+###
+
+### STEP 11: Final Verification
+### ============================
+
+### Get all projects to verify
+GET http://localhost:8080/api/projects
+Accept: application/json
+
+###
+

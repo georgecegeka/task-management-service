@@ -1,0 +1,85 @@
+### Quick Reference - All Endpoints
+### Copy and paste these as needed
+### Base URL: http://localhost:8080
+
+# ============================================
+# PROJECT ENDPOINTS
+# ============================================
+
+### Get All Projects
+GET http://localhost:8080/api/projects
+
+### Get Project by ID
+GET http://localhost:8080/api/projects/{id}
+
+### Create Project
+POST http://localhost:8080/api/projects
+Content-Type: application/json
+
+{
+  "name": "Project Name",
+  "description": "Project Description"
+}
+
+### Update Project
+PUT http://localhost:8080/api/projects/{id}
+Content-Type: application/json
+
+{
+  "name": "Updated Project Name",
+  "description": "Updated Description"
+}
+
+### Delete Project
+DELETE http://localhost:8080/api/projects/{id}
+
+
+# ============================================
+# TASK ENDPOINTS
+# ============================================
+
+### Get All Tasks for Project
+GET http://localhost:8080/api/projects/{projectId}/tasks
+
+### Get Task by ID
+GET http://localhost:8080/api/tasks/{id}
+
+### Create Task
+POST http://localhost:8080/api/projects/{projectId}/tasks
+Content-Type: application/json
+
+{
+  "title": "Task Title",
+  "description": "Task Description",
+  "status": "TODO"
+}
+
+### Update Task
+PUT http://localhost:8080/api/tasks/{id}
+Content-Type: application/json
+
+{
+  "title": "Updated Task Title",
+  "description": "Updated Description",
+  "status": "IN_PROGRESS"
+}
+
+### Delete Task
+DELETE http://localhost:8080/api/tasks/{id}
+
+
+# ============================================
+# TASK STATUS VALUES
+# ============================================
+# Valid status values:
+# - TODO
+# - IN_PROGRESS
+# - DONE
+
+
+# ============================================
+# EXAMPLE IDs (adjust based on your data)
+# ============================================
+# Replace {id} with actual IDs like: 1, 2, 3, etc.
+# Replace {projectId} with actual project IDs
+
