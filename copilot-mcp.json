@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "task-management": {
+      "command": "pwsh",
+      "args": [
+        "-File",
+        "C:\\projects\\aiHackathon\\task-force\\service\\start-mcp-server.ps1"
+      ],
+      "description": "Task Management MCP Server - Manage projects and tasks",
+      "env": {
+        "SERVER_PORT": "8080"
+      }
+    }
+  }
+}
+
