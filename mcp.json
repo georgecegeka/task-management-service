@@ -1,0 +1,27 @@
+{
+  "name": "task-management-mcp",
+  "version": "0.0.1",
+  "protocol": "jsonrpc-2.0",
+  "transport": {
+    "websocket": {
+      "url": "ws://localhost:8081/mcp/ws"
+    },
+    "http": {
+      "url": "http://localhost:8081/mcp/rpc"
+    }
+  },
+  "methods": {
+    "ping": {"description": "Health check"},
+    "listProjects": {"description": "List all projects"},
+    "getProject": {"params": {"id": "number"}},
+    "createProject": {"params": {"name": "string", "description": "string?"}},
+    "updateProject": {"params": {"id": "number", "name": "string", "description": "string?"}},
+    "deleteProject": {"params": {"id": "number"}},
+    "listTasks": {"params": {"projectId": "number"}},
+    "getTask": {"params": {"id": "number"}},
+    "createTask": {"params": {"projectId": "number", "title": "string", "description": "string?", "status": "string"}},
+    "updateTask": {"params": {"id": "number", "title": "string", "description": "string?", "status": "string"}},
+    "deleteTask": {"params": {"id": "number"}},
+    "searchTasksByStatus": {"params": {"status": "string"}}
+  }
+}
